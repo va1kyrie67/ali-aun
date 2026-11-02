@@ -257,8 +257,13 @@ export default function CaseStudyModal({ isOpen, onClose, specKey }: CaseStudyMo
 
           {/* Main Modal Content (100% Matching Dark Luxury Mishal Palette) */}
           <div className="max-w-5xl mx-auto px-[var(--pad)] pt-24 pb-32">
-            {/* Header Metadata */}
-            <div className="border-b border-[rgba(239,233,220,0.14)] pb-8 mb-10">
+            {/* Header Metadata with Staggered Editorial Entrance */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="border-b border-[rgba(239,233,220,0.14)] pb-8 mb-10"
+            >
               <span className="text-xs uppercase tracking-widest text-[#8A867D] font-mono block mb-2">
                 Production Architecture &bull; Case Study
               </span>
@@ -268,10 +273,15 @@ export default function CaseStudyModal({ isOpen, onClose, specKey }: CaseStudyMo
               <p className="font-sans text-sm sm:text-base text-[#8A867D] mt-3 max-w-2xl">
                 {displaySubtitle}
               </p>
-            </div>
+            </motion.div>
 
             {/* Quick Specifications Matrix */}
-            <dl className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-12 p-6 rounded-xl border border-[rgba(239,233,220,0.12)] bg-[#0f0f0f]/60">
+            <motion.dl
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-12 p-6 rounded-xl border border-[rgba(239,233,220,0.12)] bg-[#0f0f0f]/60"
+            >
               <div>
                 <dt className="text-xs uppercase tracking-wider text-[#8A867D] font-mono">Discipline</dt>
                 <dd className="font-serif text-base sm:text-lg text-[#EFE9DC] mt-1">
@@ -296,10 +306,15 @@ export default function CaseStudyModal({ isOpen, onClose, specKey }: CaseStudyMo
                   Active in Production
                 </dd>
               </div>
-            </dl>
+            </motion.dl>
 
             {/* macOS Browser Mockup Frame Preview with Ecosystem Switcher */}
-            <div className="mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="mb-12"
+            >
               {isEcosystem && (
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                   {/* 3-Brand Tabs */}
@@ -386,7 +401,7 @@ export default function CaseStudyModal({ isOpen, onClose, specKey }: CaseStudyMo
                   </AnimatePresence>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Action Links Bar: Live Website + Socials */}
             <div className="flex flex-wrap items-center justify-between gap-6 pb-12 mb-12 border-b border-[rgba(239,233,220,0.14)]">

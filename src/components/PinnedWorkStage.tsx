@@ -26,20 +26,26 @@ export default function PinnedWorkStage({ onOpenSpecs }: PinnedWorkStageProps) {
     if (panels.length <= 1) return;
 
     const ctx = gsap.context(() => {
-      // Set initial positions: panel 0 is visible, panels 1..n are pushed down
-      // Panels 1..n left content start at opacity 0 and y 35
+      // Set initial positions:
+      // Panel 0 left content starts at opacity 0, y 20 so it animates in as user scrolls to the section
+      // Panels 1..n are pushed down with left content at opacity 0, y 20
       panels.forEach((panel, i) => {
-        if (i > 0) {
-          gsap.set(panel, { yPercent: 100 });
-          const leftContent = panel.querySelector('.panel-left-content');
+        const leftContent = panel.querySelector('.panel-left-content');
+        if (i === 0) {
           if (leftContent) {
-            gsap.set(leftContent, { opacity: 0, y: 35 });
+            gsap.set(leftContent, { opacity: 0, y: 20 });
+          }
+        } else {
+          gsap.set(panel, { yPercent: 100 });
+          if (leftContent) {
+            gsap.set(leftContent, { opacity: 0, y: 20 });
           }
         }
       });
 
       const totalPanels = panels.length;
-      const scrollDistance = window.innerHeight * (totalPanels - 1) * 1.15;
+      // Generous distance ensuring comfortable reading dwell time per panel without feeling rushed
+      const scrollDistance = window.innerHeight * totalPanels * 1.35;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -51,19 +57,47 @@ export default function PinnedWorkStage({ onOpenSpecs }: PinnedWorkStageProps) {
         },
       });
 
-      // Smooth, solid panel stacking with synchronized staggered text glide-in
-      panels.forEach((panel, i) => {
-        if (i === 0) return;
+      // 1. Reveal Panel 0's text gracefully as stage pins
+      const panel0Left = panels[0]?.querySelector('.panel-left-content');
+      if (panel0Left) {
+        tl.to(panel0Left, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+        });
+      }
+      // Dwell period on Panel 0 for comfortable reading
+      tl.to({}, { duration: 0.5 });
+
+      // 2. Cascade subsequent panels with smooth stacking, gentle depth recession, and reading dwell
+      for (let i = 1; i < totalPanels; i++) {
+        const panel = panels[i];
+        const prevPanel = panels[i - 1];
         const leftContent = panel.querySelector('.panel-left-content');
 
-        // Panel rises into view
+        // Panel i glides up smoothly into place
         tl.to(panel, {
           yPercent: 0,
           ease: 'none',
           duration: 1,
         });
 
-        // Left text glides in gracefully as panel arrives
+        // Previous panel gently scales down and dims to create luxury depth
+        if (prevPanel) {
+          tl.to(
+            prevPanel,
+            {
+              scale: 0.96,
+              opacity: 0.35,
+              ease: 'power2.out',
+              duration: 0.7,
+            },
+            '<'
+          );
+        }
+
+        // Left narrative text glides in calmly as panel docks
         if (leftContent) {
           tl.to(
             leftContent,
@@ -71,12 +105,15 @@ export default function PinnedWorkStage({ onOpenSpecs }: PinnedWorkStageProps) {
               opacity: 1,
               y: 0,
               ease: 'power2.out',
-              duration: 0.5,
+              duration: 0.45,
             },
-            `-=${0.5}` // begins as the panel is arriving
+            '-=0.3'
           );
         }
-      });
+
+        // Dedicated dwell pause so user can absorb the architecture without abrupt motion
+        tl.to({}, { duration: 0.5 });
+      }
     }, stage);
 
     return () => ctx.revert();

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface StardustParticle {
   x: number;
@@ -11,16 +11,15 @@ interface StardustParticle {
 }
 
 export default function StarryCursor() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-  const [isClicking, setIsClicking] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const coreRef = useRef<HTMLDivElement>(null);
+  const haloRef = useRef<HTMLDivElement>(null);
+  const diamondRef = useRef<HTMLDivElement>(null);
 
   // Position refs for 120fps direct GPU rendering without React re-renders
   const mousePos = useRef({ x: -100, y: -100 });
   const haloPos = useRef({ x: -100, y: -100 });
   const lastTarget = useRef<EventTarget | null>(null);
-  const coreRef = useRef<HTMLDivElement>(null);
-  const haloRef = useRef<HTMLDivElement>(null);
 
   const particlesRef = useRef<StardustParticle[]>([
     { x: -100, y: -100, size: 2.5, opacity: 0.65, speed: 0.16 },
@@ -35,32 +34,83 @@ export default function StarryCursor() {
     if (isTouch) return;
 
     let rafId: number;
-    let hoveringState = false;
+    let isHovering = false;
+    let isClicking = false;
+    let isVisible = false;
+
+    const container = containerRef.current;
+    const halo = haloRef.current;
+    const diamond = diamondRef.current;
+
+    const updateHaloClasses = () => {
+      if (!halo) return;
+      if (isHovering) {
+        halo.className =
+          'fixed top-0 left-0 rounded-full will-change-transform flex items-center justify-center transition-[width,height,background,border-color,opacity,box-shadow] duration-250 ease-out w-11 h-11 bg-[radial-gradient(circle,rgba(239,233,220,0.20)_0%,rgba(239,233,220,0.05)_45%,transparent_75%)] border border-[rgba(239,233,220,0.38)] shadow-[0_0_24px_rgba(239,233,220,0.2)]';
+      } else if (isClicking) {
+        halo.className =
+          'fixed top-0 left-0 rounded-full will-change-transform flex items-center justify-center transition-[width,height,background,border-color,opacity,box-shadow] duration-250 ease-out w-6 h-6 bg-[radial-gradient(circle,rgba(239,233,220,0.25)_0%,transparent_70%)] border border-[rgba(239,233,220,0.45)]';
+      } else {
+        halo.className =
+          'fixed top-0 left-0 rounded-full will-change-transform flex items-center justify-center transition-[width,height,background,border-color,opacity,box-shadow] duration-250 ease-out w-8 h-8 bg-[radial-gradient(circle,rgba(239,233,220,0.12)_0%,rgba(239,233,220,0.02)_45%,transparent_70%)] border border-[rgba(239,233,220,0.16)] shadow-[0_0_14px_rgba(239,233,220,0.08)]';
+      }
+
+      if (diamond) {
+        if (isHovering) {
+          diamond.className =
+            'rotate-45 bg-[#EFE9DC] transition-all duration-200 shadow-[0_0_14px_rgba(255,255,255,1)] w-2 h-2 scale-125 bg-white';
+        } else if (isClicking) {
+          diamond.className =
+            'rotate-45 bg-[#EFE9DC] transition-all duration-200 shadow-[0_0_10px_rgba(239,233,220,0.85)] w-1.5 h-1.5 scale-90';
+        } else {
+          diamond.className =
+            'rotate-45 bg-[#EFE9DC] transition-all duration-200 shadow-[0_0_10px_rgba(239,233,220,0.85)] w-1.5 h-1.5';
+        }
+      }
+    };
 
     const onMouseMove = (e: MouseEvent) => {
       mousePos.current.x = e.clientX;
       mousePos.current.y = e.clientY;
 
-      if (!isVisible) setIsVisible(true);
+      if (!isVisible) {
+        isVisible = true;
+        if (container) container.style.opacity = '1';
+      }
 
-      // Throttled target check: only run query if event target changed
+      // Check target hover without triggering React re-renders
       if (e.target !== lastTarget.current) {
         lastTarget.current = e.target;
         const target = e.target as HTMLElement | null;
-        const isInteractive = Boolean(
+        const interactive = Boolean(
           target?.closest('a, button, [role="button"], input, textarea, select, .cursor-pointer, .btn-editorial')
         );
-        if (isInteractive !== hoveringState) {
-          hoveringState = isInteractive;
-          setIsHovering(isInteractive);
+        if (interactive !== isHovering) {
+          isHovering = interactive;
+          updateHaloClasses();
         }
       }
     };
 
-    const onMouseDown = () => setIsClicking(true);
-    const onMouseUp = () => setIsClicking(false);
-    const onMouseLeave = () => setIsVisible(false);
-    const onMouseEnter = () => setIsVisible(true);
+    const onMouseDown = () => {
+      isClicking = true;
+      updateHaloClasses();
+    };
+
+    const onMouseUp = () => {
+      isClicking = false;
+      updateHaloClasses();
+    };
+
+    const onMouseLeave = () => {
+      isVisible = false;
+      if (container) container.style.opacity = '0';
+    };
+
+    const onMouseEnter = () => {
+      isVisible = true;
+      if (container) container.style.opacity = '1';
+    };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('mousedown', onMouseDown, { passive: true });
@@ -68,7 +118,7 @@ export default function StarryCursor() {
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
 
-    // High performance RAF loop with movement threshold gates
+    // High performance 120fps direct GPU rendering loop
     const loop = () => {
       const targetX = mousePos.current.x;
       const targetY = mousePos.current.y;
@@ -84,8 +134,8 @@ export default function StarryCursor() {
       haloPos.current.x += dx * 0.22;
       haloPos.current.y += dy * 0.22;
 
-      if (haloRef.current) {
-        haloRef.current.style.transform = `translate3d(${haloPos.current.x}px, ${haloPos.current.y}px, 0) translate(-50%, -50%)`;
+      if (halo) {
+        halo.style.transform = `translate3d(${haloPos.current.x}px, ${haloPos.current.y}px, 0) translate(-50%, -50%)`;
       }
 
       // 3. Trailing stardust micro-particles
@@ -113,26 +163,19 @@ export default function StarryCursor() {
       document.removeEventListener('mouseenter', onMouseEnter);
       cancelAnimationFrame(rafId);
     };
-  }, [isVisible]);
+  }, []);
 
   return (
     <div
-      className={`pointer-events-none fixed inset-0 z-[9999] transition-opacity duration-300 ${
-        isVisible ? 'opacity-100' : 'opacity-0'
-      }`}
+      ref={containerRef}
+      className="pointer-events-none fixed inset-0 z-[9999] opacity-0 transition-opacity duration-300"
       style={{ contain: 'layout style paint' }}
       aria-hidden="true"
     >
       {/* Soft Celestial Halo Glow */}
       <div
         ref={haloRef}
-        className={`fixed top-0 left-0 rounded-full transition-[width,height,background,border-color,opacity,box-shadow] duration-250 ease-out will-change-transform flex items-center justify-center ${
-          isHovering
-            ? 'w-11 h-11 bg-[radial-gradient(circle,rgba(239,233,220,0.20)_0%,rgba(239,233,220,0.05)_45%,transparent_75%)] border border-[rgba(239,233,220,0.38)] shadow-[0_0_24px_rgba(239,233,220,0.2)]'
-            : isClicking
-            ? 'w-6 h-6 bg-[radial-gradient(circle,rgba(239,233,220,0.25)_0%,transparent_70%)] border border-[rgba(239,233,220,0.45)]'
-            : 'w-8 h-8 bg-[radial-gradient(circle,rgba(239,233,220,0.12)_0%,rgba(239,233,220,0.02)_45%,transparent_70%)] border border-[rgba(239,233,220,0.16)] shadow-[0_0_14px_rgba(239,233,220,0.08)]'
-        }`}
+        className="fixed top-0 left-0 rounded-full transition-[width,height,background,border-color,opacity,box-shadow] duration-250 ease-out will-change-transform flex items-center justify-center w-8 h-8 bg-[radial-gradient(circle,rgba(239,233,220,0.12)_0%,rgba(239,233,220,0.02)_45%,transparent_70%)] border border-[rgba(239,233,220,0.16)] shadow-[0_0_14px_rgba(239,233,220,0.08)]"
       />
 
       {/* Trailing Stardust Micro-Particles */}
@@ -146,7 +189,7 @@ export default function StarryCursor() {
           style={{
             width: `${p.size}px`,
             height: `${p.size}px`,
-            opacity: isHovering ? p.opacity * 1.25 : p.opacity,
+            opacity: p.opacity,
           }}
         />
       ))}
@@ -157,13 +200,8 @@ export default function StarryCursor() {
         className="fixed top-0 left-0 pointer-events-none will-change-transform flex items-center justify-center"
       >
         <div
-          className={`rotate-45 bg-[#EFE9DC] transition-all duration-200 shadow-[0_0_10px_rgba(239,233,220,0.85)] ${
-            isHovering
-              ? 'w-2 h-2 scale-125 bg-white shadow-[0_0_14px_rgba(255,255,255,1)]'
-              : isClicking
-              ? 'w-1.5 h-1.5 scale-90'
-              : 'w-1.5 h-1.5'
-          }`}
+          ref={diamondRef}
+          className="rotate-45 bg-[#EFE9DC] transition-all duration-200 shadow-[0_0_10px_rgba(239,233,220,0.85)] w-1.5 h-1.5"
         />
       </div>
     </div>

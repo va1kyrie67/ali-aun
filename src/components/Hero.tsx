@@ -25,7 +25,7 @@ export default function Hero() {
     // Fallback timer ensures Hero is revealed even if openingComplete was missed
     const timer = setTimeout(() => {
       setIsRevealed(true);
-    }, 2850);
+    }, 4000);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -111,6 +111,8 @@ export default function Hero() {
             <span className="w-1.5 h-1.5 rounded-full bg-[#EFE9DC] opacity-50" />
             <span>CrushSVG</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#EFE9DC] opacity-50" />
+            <span>SigSignature</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#EFE9DC] opacity-50" />
           </span>
           <span className="inline-flex items-center gap-8 px-4">
             <span>Next.js 14</span>
@@ -128,6 +130,8 @@ export default function Hero() {
             <span>The Nevon</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#EFE9DC] opacity-50" />
             <span>CrushSVG</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#EFE9DC] opacity-50" />
+            <span>SigSignature</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#EFE9DC] opacity-50" />
           </span>
         </div>

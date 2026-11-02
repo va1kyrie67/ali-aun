@@ -37,20 +37,20 @@ export default function AboutSection() {
     <section id="about" className="px-[var(--pad)] pt-28 sm:pt-40 pb-24 sm:pb-36 border-t border-[rgba(239,233,220,0.14)]">
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16"
         >
           <p className="md:col-span-3 text-xs uppercase tracking-widest text-[#8A867D] font-mono pt-2 sm:pt-3">
             Discipline &bull; About
           </p>
           <div className="md:col-span-9 max-w-3xl">
-            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] tracking-tight text-[#EFE9DC] scroll-illuminate">
+            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] tracking-tight text-[#EFE9DC]">
               Software, email systems and engines that look calm and work hard.
             </h2>
-            <p className="mt-6 text-base sm:text-lg text-[#B9BCC2] leading-relaxed font-sans max-w-xl scroll-illuminate">
+            <p className="mt-6 text-base sm:text-lg text-[#B9BCC2] leading-relaxed font-sans max-w-xl">
               Clear architecture, verified quality standards, and zero unnecessary noise.
             </p>
           </div>
@@ -61,12 +61,12 @@ export default function AboutSection() {
           {disciplines.map((item, i) => (
             <motion.button
               key={item.number}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.5, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.6, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
               onClick={() => scrollToTarget(item.href)}
-              className="w-full text-left py-6 sm:py-8 border-b border-[rgba(239,233,220,0.14)] grid grid-cols-12 items-baseline gap-4 text-[#B9BCC2] hover:text-[#EFE9DC] hover:pl-4 transition-all duration-300 group"
+              className="w-full text-left py-6 sm:py-8 border-b border-[rgba(239,233,220,0.14)] grid grid-cols-12 items-baseline gap-4 text-[#B9BCC2] hover:text-[#EFE9DC] hover:pl-4 transition-[padding,color,border-color] duration-300 ease-out select-none group"
               role="listitem"
             >
               <span className="col-span-2 sm:col-span-1 font-serif text-[#8A867D] text-sm">

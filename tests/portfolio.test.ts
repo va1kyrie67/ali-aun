@@ -136,5 +136,24 @@ describe('Portfolio Data & Architecture Integrity (TDD)', () => {
     const HeroModule = await import('../src/components/Hero');
     expect(HeroModule.default).toBeDefined();
   });
+
+  it('should include SigSignature alongside The Nevon and CrushSVG in Hero marquee ticker', async () => {
+    const fs = await import('fs');
+    const heroCode = fs.readFileSync('src/components/Hero.tsx', 'utf-8');
+    expect(heroCode).toContain('<span>The Nevon</span>');
+    expect(heroCode).toContain('<span>CrushSVG</span>');
+    expect(heroCode).toContain('<span>SigSignature</span>');
+  });
+
+  it('should have PFP hover interactions in LeadershipSection without conflicting transition-all', async () => {
+    const fs = await import('fs');
+    const leadershipCode = fs.readFileSync('src/components/LeadershipSection.tsx', 'utf-8');
+    // Ensure PFP has interactive hover classes
+    expect(leadershipCode).toContain('group/pfp');
+    expect(leadershipCode).toContain('group-hover/pfp:scale-110');
+    // Ensure motion.div cards do not have transition-all
+    expect(leadershipCode).not.toMatch(/motion\.div[^>]*transition-all/);
+  });
 });
+
 

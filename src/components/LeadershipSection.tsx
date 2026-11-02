@@ -10,21 +10,21 @@ export default function LeadershipSection() {
     <section id="leadership" className="px-[var(--pad)] py-24 sm:py-32 border-t border-[rgba(239,233,220,0.14)]">
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-[rgba(239,233,220,0.14)]"
         >
           <div>
             <span className="text-xs uppercase tracking-widest text-[#8A867D] font-mono block mb-2">
               Leadership &bull; People
             </span>
-            <h2 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-[#EFE9DC] scroll-illuminate">
+            <h2 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-[#EFE9DC]">
               Strategy &amp; Direction
             </h2>
           </div>
-          <p className="max-w-xs text-sm text-[#8A867D] leading-relaxed font-sans scroll-illuminate">
+          <p className="max-w-xs text-sm text-[#8A867D] leading-relaxed font-sans">
             Executive leadership, technical direction and public editorial channels managed across The Nevon and CrushSVG.
           </p>
         </motion.div>
@@ -33,22 +33,25 @@ export default function LeadershipSection() {
           {leaders.map((leader, i) => (
             <motion.div
               key={leader.name}
-              initial={{ opacity: 0, y: 35 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -6 }}
               viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              className="border border-[rgba(239,233,220,0.14)] p-8 sm:p-10 rounded-2xl bg-[#090909] flex flex-col justify-between transform hover:-translate-y-1.5 hover:border-[rgba(239,233,220,0.3)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)] transition-all duration-300 group/card"
+              transition={{ duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="border border-[rgba(239,233,220,0.14)] p-8 sm:p-10 rounded-2xl bg-[#090909] flex flex-col justify-between hover:border-[rgba(239,233,220,0.3)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)] transition-[border-color,box-shadow] duration-300 group/card cursor-default"
             >
               <div>
                 <div className="flex items-center gap-6 mb-6">
-                  <div className="relative w-20 h-20 rounded-full overflow-hidden border border-[rgba(239,233,220,0.2)] shrink-0 bg-[#121212]">
-                    <Image
-                      src={leader.image}
-                      alt={leader.name}
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                    />
+                  <div className="group/pfp cursor-pointer relative shrink-0">
+                    <div className="relative w-20 h-20 rounded-full overflow-hidden border border-[rgba(239,233,220,0.2)] bg-[#121212] transition-all duration-300 ease-out group-hover/pfp:scale-105 group-hover/pfp:-translate-y-1 group-hover/pfp:border-[#EFE9DC] group-hover/pfp:shadow-[0_0_24px_rgba(239,233,220,0.35)]">
+                      <Image
+                        src={leader.image}
+                        alt={leader.name}
+                        fill
+                        sizes="80px"
+                        className="object-cover transition-transform duration-500 ease-out group-hover/pfp:scale-110"
+                      />
+                    </div>
                   </div>
                   <div>
                     <span className="text-xs uppercase tracking-wider text-[#8A867D] font-mono block">

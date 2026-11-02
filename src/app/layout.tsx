@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://craft-portfolio-five.vercel.app'),
+  metadataBase: new URL('https://ali-aun.vercel.app'),
   alternates: {
     canonical: '/',
   },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: 'Ali Aun | Digital Architecture & Senior SQA Portfolio',
     description:
       'Portfolio of Ali Aun: SQA & Automation Specialist @ The Nevon & CrushSVG | Playwright • Next.js • n8n Pipelines & Production Email Systems.',
-    url: 'https://craft-portfolio-five.vercel.app',
+    url: 'https://ali-aun.vercel.app',
     siteName: 'Ali Aun Portfolio',
     images: [
       {

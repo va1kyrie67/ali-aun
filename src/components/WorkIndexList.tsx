@@ -13,7 +13,7 @@ export default function WorkIndexList({ onOpenSpecs }: WorkIndexListProps) {
     <section className="px-[var(--pad)] py-24 sm:py-32 max-w-7xl mx-auto bg-[#070707] text-[#EFE9DC] border-t border-[rgba(239,233,220,0.14)]">
       {/* Section Header with Staggered Scroll Reveal */}
       <motion.div
-        initial={{ opacity: 0, y: 25 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -23,11 +23,11 @@ export default function WorkIndexList({ onOpenSpecs }: WorkIndexListProps) {
           <span className="text-xs uppercase tracking-widest text-[#8A867D] font-mono block mb-2">
             Discipline Index &bull; 08 Production Systems
           </span>
-          <h2 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal tracking-tight text-[#EFE9DC] leading-[0.95] scroll-illuminate">
+          <h2 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal tracking-tight text-[#EFE9DC] leading-[0.95]">
             Engineering Directory.
           </h2>
         </div>
-        <p className="max-w-xs text-sm text-[#8A867D] leading-relaxed font-sans scroll-illuminate">
+        <p className="max-w-xs text-sm text-[#8A867D] leading-relaxed font-sans">
           Complete register of validated architectures, SQA launch passes, email systems, and autonomous engines.
         </p>
       </motion.div>

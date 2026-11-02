@@ -17,8 +17,8 @@ const config: Config = {
         line: "rgba(239, 233, 220, 0.14)",
       },
       fontFamily: {
-        serif: ["Amarante", "Georgia", "serif"],
-        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        serif: ["var(--font-amarante)", "Amarante", "Georgia", "serif"],
+        sans: ["var(--font-inter)", "Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "monospace"],
       },
     },
