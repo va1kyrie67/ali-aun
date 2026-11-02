@@ -2,13 +2,20 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { leaders } from '@/data/siteData';
 
 export default function LeadershipSection() {
   return (
     <section id="leadership" className="px-[var(--pad)] py-24 sm:py-32 border-t border-[rgba(239,233,220,0.14)]">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-[rgba(239,233,220,0.14)]">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-[rgba(239,233,220,0.14)]"
+        >
           <div>
             <span className="text-xs uppercase tracking-widest text-[#8A867D] font-mono block mb-2">
               Leadership &bull; People
@@ -20,12 +27,16 @@ export default function LeadershipSection() {
           <p className="max-w-xs text-sm text-[#8A867D] leading-relaxed font-sans scroll-illuminate">
             Executive leadership, technical direction and public editorial channels managed across The Nevon and CrushSVG.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
           {leaders.map((leader, i) => (
-            <div
+            <motion.div
               key={leader.name}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
               className="border border-[rgba(239,233,220,0.14)] p-8 sm:p-10 rounded-2xl bg-[#090909] flex flex-col justify-between transform hover:-translate-y-1.5 hover:border-[rgba(239,233,220,0.3)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)] transition-all duration-300 group/card"
             >
               <div>
@@ -77,7 +88,7 @@ export default function LeadershipSection() {
                   <span className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-0.5 transition-transform duration-300">↗</span>
                 </a>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

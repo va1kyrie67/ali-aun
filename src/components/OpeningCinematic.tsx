@@ -122,6 +122,7 @@ export default function OpeningCinematic() {
         <div className="h-9 flex items-center justify-center overflow-hidden">
           <div
             ref={wordRef}
+            style={{ opacity: 0, transform: 'translateY(16px)' }}
             className="font-serif text-xl sm:text-2xl text-[#B9BCC2] tracking-wide"
           >
             Architecture
@@ -132,6 +133,7 @@ export default function OpeningCinematic() {
         <div className="py-2 flex items-center justify-center">
           <div
             ref={nameRef}
+            style={{ opacity: 0, transform: 'translateY(50px)' }}
             className="font-serif text-[clamp(3.5rem,15vw,13rem)] font-light leading-tight tracking-tight text-[#EFE9DC]"
           >
             Ali Aun
@@ -142,6 +144,7 @@ export default function OpeningCinematic() {
         <div className="w-[min(340px,70vw)] h-[1px] bg-[rgba(239,233,220,0.15)] overflow-hidden">
           <div
             ref={lineRef}
+            style={{ transform: 'scaleX(0)', transformOrigin: 'left' }}
             className="h-full bg-[#EFE9DC] w-full"
           />
         </div>

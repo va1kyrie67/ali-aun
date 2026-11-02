@@ -11,12 +11,16 @@ import ContactSection from '@/components/ContactSection';
 import OpeningCinematic from '@/components/OpeningCinematic';
 import CaseStudyModal from '@/components/CaseStudyModal';
 import ScrollIllumination from '@/components/ScrollIllumination';
+import StarryCursor from '@/components/StarryCursor';
 
 export default function Home() {
   const [activeSpecKey, setActiveSpecKey] = useState<string | null>(null);
 
   return (
     <>
+      {/* Subtle Celestial Starry Glowing Mouse Cursor */}
+      <StarryCursor />
+
       {/* Subtle Analog Grain Overlay */}
       <div className="grain" aria-hidden="true" />
 

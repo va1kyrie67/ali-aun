@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { scrollToTarget } from '@/lib/lenis';
+import { motion } from 'framer-motion';
 import { siteConfig } from '@/data/siteData';
 
 export default function ContactSection() {
@@ -9,7 +9,13 @@ export default function ContactSection() {
     <section id="contact" className="px-[var(--pad)] pt-24 sm:pt-36 pb-12 border-t border-[rgba(239,233,220,0.14)] overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Main Call to Action */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center justify-between"
+        >
           <div className="lg:col-span-8">
             <h2 className="font-serif text-[clamp(2.5rem,7vw,7rem)] font-normal leading-[1.02] tracking-tight text-[#EFE9DC] max-w-[14ch]">
               Have a system to build? Let&apos;s make it work.
@@ -29,10 +35,16 @@ export default function ContactSection() {
               </svg>
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* Contact Links */}
-        <div className="flex flex-wrap items-center gap-8 sm:gap-14 mt-16 sm:mt-24 text-base sm:text-xl font-serif text-[#EFE9DC] select-none">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-wrap items-center gap-8 sm:gap-14 mt-16 sm:mt-24 text-base sm:text-xl font-serif text-[#EFE9DC] select-none"
+        >
           <a
             href={`mailto:${siteConfig.socials.email}`}
             className="inline-flex items-center gap-2 pb-1.5 border-b border-[rgba(239,233,220,0.2)] hover:border-[#EFE9DC] text-[#EFE9DC] hover:text-white hover:-translate-y-1 transition-all duration-300 ease-out group"
@@ -50,25 +62,35 @@ export default function ContactSection() {
             <span>LinkedIn</span>
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
           </a>
-        </div>
+        </motion.div>
 
         {/* Footer Bar */}
-        <footer className="mt-20 pt-6 border-t border-[rgba(239,233,220,0.14)] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-sans text-[#8A867D]">
+        <motion.footer
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mt-20 pt-6 border-t border-[rgba(239,233,220,0.14)] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-sans text-[#8A867D]"
+        >
           <span>
             &copy; {new Date().getFullYear()} Ali Aun &bull; Digital Architecture &amp; Senior SQA Specialist
           </span>
           <span className="font-mono text-[#8A867D]">
             Crafted with Precision
           </span>
-        </footer>
+        </motion.footer>
 
         {/* Grand Background Watermark */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, delay: 0.25 }}
           className="font-serif text-[clamp(5rem,24vw,26rem)] font-normal text-[rgba(239,233,220,0.05)] leading-[0.8] tracking-tight text-center mt-8 sm:mt-12 -mb-6 select-none pointer-events-none"
           aria-hidden="true"
         >
           Ali Aun
-        </div>
+        </motion.div>
       </div>
     </section>
   );

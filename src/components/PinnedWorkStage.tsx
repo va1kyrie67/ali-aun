@@ -27,33 +27,55 @@ export default function PinnedWorkStage({ onOpenSpecs }: PinnedWorkStageProps) {
 
     const ctx = gsap.context(() => {
       // Set initial positions: panel 0 is visible, panels 1..n are pushed down
+      // Panels 1..n left content start at opacity 0 and y 35
       panels.forEach((panel, i) => {
         if (i > 0) {
           gsap.set(panel, { yPercent: 100 });
+          const leftContent = panel.querySelector('.panel-left-content');
+          if (leftContent) {
+            gsap.set(leftContent, { opacity: 0, y: 35 });
+          }
         }
       });
 
       const totalPanels = panels.length;
-      const scrollDistance = window.innerHeight * (totalPanels - 1) * 1.25;
+      const scrollDistance = window.innerHeight * (totalPanels - 1) * 1.15;
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: stage,
           pin: true,
-          scrub: 0.8,
+          scrub: 0.15, // Responsive 1:1 sync with Lenis smooth scroll - zero lag
           start: 'top top',
           end: () => `+=${scrollDistance}`,
         },
       });
 
-      // Smooth, solid panel stacking with zero opacity bleed
+      // Smooth, solid panel stacking with synchronized staggered text glide-in
       panels.forEach((panel, i) => {
         if (i === 0) return;
+        const leftContent = panel.querySelector('.panel-left-content');
+
+        // Panel rises into view
         tl.to(panel, {
           yPercent: 0,
           ease: 'none',
           duration: 1,
         });
+
+        // Left text glides in gracefully as panel arrives
+        if (leftContent) {
+          tl.to(
+            leftContent,
+            {
+              opacity: 1,
+              y: 0,
+              ease: 'power2.out',
+              duration: 0.5,
+            },
+            `-=${0.5}` // begins as the panel is arriving
+          );
+        }
       });
     }, stage);
 
@@ -91,7 +113,7 @@ export default function PinnedWorkStage({ onOpenSpecs }: PinnedWorkStageProps) {
               ref={(el) => {
                 panelsRef.current[index] = el;
               }}
-              className="absolute inset-0 w-full h-full flex items-center px-[var(--pad)] pt-20 pb-8 sm:pb-12 bg-[#070707] border-t border-[rgba(239,233,220,0.14)] shadow-2xl origin-bottom"
+              className="absolute inset-0 w-full h-full flex items-center px-[var(--pad)] pt-20 pb-8 sm:pb-12 bg-[#070707] border-t border-[rgba(239,233,220,0.14)] shadow-2xl origin-bottom will-change-transform"
               style={{ zIndex: index + 10 }}
             >
               {/* Radial Backdrop Glow */}
@@ -107,8 +129,8 @@ export default function PinnedWorkStage({ onOpenSpecs }: PinnedWorkStageProps) {
 
               {/* Side-by-Side Split Desktop Composition matching Reference Video */}
               <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center h-full max-h-[82vh]">
-                {/* Left Column: Typography, Details & Action Triggers */}
-                <div className="lg:col-span-5 flex flex-col justify-center gap-4 pr-0 lg:pr-4">
+                {/* Left Column: Typography, Details & Action Triggers with Dynamic Staggered Reveal */}
+                <div className="panel-left-content lg:col-span-5 flex flex-col justify-center gap-4 pr-0 lg:pr-4 will-change-transform">
                   <span className="text-xs uppercase tracking-widest text-[#8A867D] font-mono block mb-2">
                     {project.badge}
                   </span>

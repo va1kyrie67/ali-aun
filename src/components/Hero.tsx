@@ -6,6 +6,7 @@ import HeroCanvas from './HeroCanvas';
 
 export default function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isRevealed, setIsRevealed] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -14,8 +15,23 @@ export default function Hero() {
       setMousePos({ x: x * 6, y: -y * 6 });
     };
 
+    const handleOpeningComplete = () => {
+      setIsRevealed(true);
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('openingComplete', handleOpeningComplete);
+
+    // Fallback timer ensures Hero is revealed even if openingComplete was missed
+    const timer = setTimeout(() => {
+      setIsRevealed(true);
+    }, 2850);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('openingComplete', handleOpeningComplete);
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
@@ -37,10 +53,10 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 35 }}
             animate={{
-              opacity: 1,
-              y: 0,
-              rotateX: mousePos.y,
-              rotateY: mousePos.x,
+              opacity: isRevealed ? 1 : 0,
+              y: isRevealed ? 0 : 35,
+              rotateX: isRevealed ? mousePos.y : 0,
+              rotateY: isRevealed ? mousePos.x : 0,
             }}
             transition={{
               opacity: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
@@ -63,8 +79,8 @@ export default function Hero() {
           {/* Subtitle in Editorial Serif */}
           <motion.p
             initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            animate={{ opacity: isRevealed ? 1 : 0, y: isRevealed ? 0 : 25 }}
+            transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif text-[clamp(1.15rem,2.4vw,2.2rem)] font-normal leading-[1.25] text-[#B9BCC2] mt-4 mb-4 max-w-[26ch] select-none"
           >
             Digital Architect &amp; Senior SQA Specialist crafting software, email systems and automation engines.
