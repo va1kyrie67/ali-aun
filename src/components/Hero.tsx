@@ -25,7 +25,7 @@ export default function Hero() {
     // Fallback timer ensures Hero is revealed even if openingComplete was missed
     const timer = setTimeout(() => {
       setIsRevealed(true);
-    }, 4000);
+    }, 2850);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);

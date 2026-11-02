@@ -29,74 +29,72 @@ export default function OpeningCinematic() {
     let isCancelled = false;
 
     const ctx = gsap.context(() => {
-      // Build timeline once fonts are verified ready to prevent any FOUT or layout flash
+      const counter = { val: 0 };
+
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'power4.out' },
+        onComplete: () => {
+          document.body.style.overflow = '';
+          setIsDone(true);
+          // Trigger hero reveal
+          window.dispatchEvent(new CustomEvent('openingComplete'));
+        },
+      });
+
+      // 1. Name glides up smoothly into full view
+      tl.to(nameRef.current, { y: 0, opacity: 1, duration: 1.0, ease: 'power3.out' }, 0.2);
+
+      // 2. Numerical counter 000 to 100
+      tl.to(
+        counter,
+        {
+          val: 100,
+          duration: 2.4,
+          ease: 'power2.inOut',
+          onUpdate: () => {
+            if (countRef.current) {
+              countRef.current.textContent = String(Math.round(counter.val)).padStart(3, '0');
+            }
+          },
+        },
+        0
+      );
+
+      // 3. Hairline progress bar scaling
+      tl.to(lineRef.current, { scaleX: 1, duration: 2.4, ease: 'power2.inOut' }, 0);
+
+      // 4. Word cycler sequence (calm, deliberate pacing)
+      WORDS.forEach((word, i) => {
+        tl.add(() => {
+          if (wordRef.current) {
+            wordRef.current.textContent = word;
+            gsap.fromTo(
+              wordRef.current,
+              { y: 16, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }
+            );
+          }
+        }, 0.25 + i * 0.55);
+      });
+
+      // 5. Exit choreography: Center stage fades out completely BEFORE curtains open
+      tl.to([centerRef.current, countRef.current], { opacity: 0, y: -20, duration: 0.35, ease: 'power2.in' }, 2.45)
+        .set(containerRef.current, { backgroundColor: 'transparent' }, 2.74)
+        .to(topCurtainRef.current, { yPercent: -101, duration: 0.95, ease: 'power4.inOut' }, 2.75)
+        .to(botCurtainRef.current, { yPercent: 101, duration: 0.95, ease: 'power4.inOut' }, 2.75);
+
+      // Wait for fonts to be ready before unhiding and playing timeline
       const initSequence = () => {
         if (isCancelled) return;
-
-        if (centerRef.current) centerRef.current.style.visibility = 'visible';
-        if (countRef.current) countRef.current.style.visibility = 'visible';
-
-        const counter = { val: 0 };
-        const tl = gsap.timeline({
-          defaults: { ease: 'power4.out' },
-          onComplete: () => {
-            document.body.style.overflow = '';
-            setIsDone(true);
-            window.dispatchEvent(new CustomEvent('openingComplete'));
-          },
-        });
-
-        // 1. Name glides up smoothly into full view from clean zero opacity
-        tl.fromTo(
-          nameRef.current,
-          { y: 35, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.0, ease: 'power3.out' },
-          0.15
+        gsap.set(
+          [centerRef.current, nameRef.current, wordRef.current, lineRef.current, countRef.current],
+          { visibility: 'visible' }
         );
-
-        // 2. Numerical counter 000 to 100
-        tl.to(
-          counter,
-          {
-            val: 100,
-            duration: 2.4,
-            ease: 'power2.inOut',
-            onUpdate: () => {
-              if (countRef.current) {
-                countRef.current.textContent = String(Math.round(counter.val)).padStart(3, '0');
-              }
-            },
-          },
-          0
-        );
-
-        // 3. Hairline progress bar scaling
-        tl.fromTo(
-          lineRef.current,
-          { scaleX: 0, transformOrigin: 'left' },
-          { scaleX: 1, duration: 2.4, ease: 'power2.inOut' },
-          0
-        );
-
-        // 4. Word cycler sequence (calm, deliberate pacing)
-        WORDS.forEach((word, i) => {
-          tl.add(() => {
-            if (wordRef.current) {
-              wordRef.current.textContent = word;
-              gsap.fromTo(
-                wordRef.current,
-                { y: 14, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }
-              );
-            }
-          }, 0.25 + i * 0.55);
-        });
-
-        // 5. Exit choreography: Center stage fades out completely BEFORE curtains open
-        tl.to([centerRef.current, countRef.current], { opacity: 0, y: -20, duration: 0.35, ease: 'power2.in' }, 2.45)
-          .set(containerRef.current, { backgroundColor: 'transparent' }, 2.74)
-          .to(topCurtainRef.current, { yPercent: -101, duration: 0.95, ease: 'power4.inOut' }, 2.75)
-          .to(botCurtainRef.current, { yPercent: 101, duration: 0.95, ease: 'power4.inOut' }, 2.75);
+        gsap.set(nameRef.current, { y: 50, opacity: 0 });
+        gsap.set(wordRef.current, { y: 16, opacity: 0 });
+        gsap.set(lineRef.current, { scaleX: 0, transformOrigin: 'left' });
+        tl.play();
       };
 
       if (typeof document !== 'undefined' && 'fonts' in document) {
