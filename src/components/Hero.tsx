@@ -64,7 +64,7 @@ export default function Hero() {
               rotateX: { duration: 0.2, ease: 'easeOut' },
               rotateY: { duration: 0.2, ease: 'easeOut' },
             }}
-            style={{ transformStyle: 'preserve-3d' }}
+            style={{ transformStyle: 'preserve-3d', visibility: isRevealed ? 'visible' : 'hidden' }}
             className="will-change-transform max-w-[85%]"
           >
             <motion.h1

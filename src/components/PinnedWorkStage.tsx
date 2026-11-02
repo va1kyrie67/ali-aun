@@ -45,7 +45,7 @@ export default function PinnedWorkStage({ onOpenSpecs }: PinnedWorkStageProps) {
         scrollTrigger: {
           trigger: stage,
           pin: true,
-          scrub: 0.15, // Responsive 1:1 sync with Lenis smooth scroll - zero lag
+          scrub: true, // Direct 1:1 synchronous lock with Lenis smooth scroll
           start: 'top top',
           end: () => `+=${scrollDistance}`,
         },

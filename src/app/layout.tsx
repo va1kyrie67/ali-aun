@@ -1,6 +1,20 @@
 import type { Metadata } from 'next';
+import { Amarante, Inter } from 'next/font/google';
 import './globals.css';
 import SmoothScrollProvider from '@/components/SmoothScrollProvider';
+
+const amarante = Amarante({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'block',
+  variable: '--font-amarante',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://craft-portfolio-five.vercel.app'),
@@ -40,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`scroll-smooth ${amarante.variable} ${inter.variable}`}>
       <body className="bg-[#070707] text-[#EFE9DC] antialiased selection:bg-[#EFE9DC] selection:text-[#070707]">
         <SmoothScrollProvider>
           {children}

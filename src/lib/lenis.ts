@@ -25,12 +25,12 @@ export function initLenis(): Lenis | null {
   }
 
   const lenis = new Lenis({
-    duration: 1.2,
+    duration: 1.0,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     orientation: 'vertical',
     gestureOrientation: 'vertical',
     smoothWheel: true,
-    wheelMultiplier: 1.0,
+    wheelMultiplier: 1.05,
     touchMultiplier: 1.5,
   });
 
@@ -45,7 +45,8 @@ export function initLenis(): Lenis | null {
   gsap.ticker.add((time) => {
     lenis.raf(time * 1000);
   });
-  gsap.ticker.lagSmoothing(0);
+  // Resilient lag smoothing prevents violent frame-drop hitching during fast scrolls
+  gsap.ticker.lagSmoothing(500, 33);
 
   return lenis;
 }

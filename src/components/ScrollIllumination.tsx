@@ -28,18 +28,16 @@ export default function ScrollIllumination() {
         gsap.fromTo(
           el,
           {
-            color: '#8A867D',
             opacity: 0.45,
           },
           {
-            color: '#EFE9DC',
             opacity: 1,
             ease: 'none',
             scrollTrigger: {
               trigger: el,
               start: 'top 88%',
               end: 'top 52%',
-              scrub: 0.4,
+              scrub: true,
             },
           }
         );

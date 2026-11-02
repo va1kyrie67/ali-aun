@@ -248,10 +248,11 @@ export default function CaseStudyModal({ isOpen, onClose, specKey }: CaseStudyMo
           {/* Floating Close Pill Button */}
           <button
             onClick={handleClose}
-            className="fixed top-6 right-6 sm:right-12 z-[155] px-6 py-2.5 rounded-full border border-[rgba(239,233,220,0.4)] bg-[#070707]/90 backdrop-blur-md text-[#EFE9DC] font-serif text-sm hover:bg-[#EFE9DC] hover:text-[#070707] transition-all cursor-pointer shadow-lg"
+            className="fixed top-6 right-6 sm:right-12 z-[155] px-6 py-2.5 rounded-full border border-[rgba(239,233,220,0.4)] bg-[#070707]/90 backdrop-blur-md text-[#EFE9DC] font-serif text-sm hover:bg-[#EFE9DC] hover:text-[#070707] hover:-translate-y-1 hover:scale-105 active:scale-95 hover:shadow-[0_12px_28px_rgba(239,233,220,0.22)] transition-all duration-300 ease-out cursor-pointer shadow-lg select-none group"
             aria-label="Close Case Study"
           >
-            Close &times;
+            <span className="select-none">Close </span>
+            <span className="inline-block transition-transform duration-300 group-hover:rotate-90 select-none">&times;</span>
           </button>
 
           {/* Main Modal Content (100% Matching Dark Luxury Mishal Palette) */}
@@ -323,11 +324,11 @@ export default function CaseStudyModal({ isOpen, onClose, specKey }: CaseStudyMo
                   <button
                     type="button"
                     onClick={() => setBrandIdx((prev) => (prev + 1) % ECOSYSTEM_BRANDS.length)}
-                    className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#141414] hover:bg-[#EFE9DC] text-[#EFE9DC] hover:text-[#070707] border border-[rgba(239,233,220,0.24)] text-xs font-serif transition-all duration-300 hover:scale-105 cursor-pointer group"
+                    className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#141414] hover:bg-[#EFE9DC] text-[#EFE9DC] hover:text-[#070707] border border-[rgba(239,233,220,0.24)] text-xs font-serif transition-all duration-300 hover:scale-105 cursor-pointer group select-none"
                     aria-label="Next brand showcase"
                   >
-                    <span>Next: {ECOSYSTEM_BRANDS[(brandIdx + 1) % ECOSYSTEM_BRANDS.length].name}</span>
-                    <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                    <span className="select-none">Next: {ECOSYSTEM_BRANDS[(brandIdx + 1) % ECOSYSTEM_BRANDS.length].name}</span>
+                    <span className="group-hover:translate-x-1 transition-transform select-none">&rarr;</span>
                   </button>
                 </div>
               )}
@@ -509,10 +510,10 @@ export default function CaseStudyModal({ isOpen, onClose, specKey }: CaseStudyMo
               </span>
               <button
                 onClick={handleClose}
-                className="btn-editorial"
+                className="btn-editorial select-none"
               >
-                <span>Back to Overview</span>
-                <span>&rarr;</span>
+                <span className="select-none">Back to Overview</span>
+                <span className="select-none">&rarr;</span>
               </button>
             </div>
           </div>
