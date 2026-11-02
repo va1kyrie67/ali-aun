@@ -122,5 +122,19 @@ describe('Portfolio Data & Architecture Integrity (TDD)', () => {
     expect(smartAppliance?.badge).toContain('12 Templates');
     expect(smartAppliance?.badge).not.toContain('12 Variations');
   });
+
+  it('should export StarryCursor component cleanly', async () => {
+    const StarryCursorModule = await import('../src/components/StarryCursor');
+    expect(StarryCursorModule.default).toBeDefined();
+    expect(typeof StarryCursorModule.default).toBe('function');
+  });
+
+  it('should export OpeningCinematic and Hero components cleanly', async () => {
+    const OpeningCinematicModule = await import('../src/components/OpeningCinematic');
+    expect(OpeningCinematicModule.default).toBeDefined();
+
+    const HeroModule = await import('../src/components/Hero');
+    expect(HeroModule.default).toBeDefined();
+  });
 });
 
